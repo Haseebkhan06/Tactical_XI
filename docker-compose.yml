@@ -1,0 +1,22 @@
+
+services:
+  db:
+    image: postgres:16
+    container_name: tactical_xi_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tactical_xi
+      POSTGRES_USER: tactical_user
+      POSTGRES_PASSWORD: tactical_dev_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - tactical_xi_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tactical_user -d tactical_xi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  tactical_xi_postgres_data:
